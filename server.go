@@ -1,4 +1,4 @@
-package home_go
+package homego
 
 import (
 	"log"

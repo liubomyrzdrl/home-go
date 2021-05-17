@@ -1,7 +1,7 @@
 package main
 
 import (
-	home_go "github.com/liubomyrzdrl/home-go"
+	homego "github.com/liubomyrzdrl/home-go"
 	"github.com/liubomyrzdrl/home-go/config"
 	"github.com/liubomyrzdrl/home-go/models"
 	"github.com/liubomyrzdrl/home-go/pkg/routes"
@@ -17,8 +17,8 @@ func main() {
 		panic("failed to connect database")
 	}
 	config.DB.AutoMigrate(&models.User{})
-	srv := new(home_go.Server)
 
+	srv := new(homego.Server)
 	if err := srv.Run(config.PORT, routes.InitRouter()); err != nil {
 		log.Fatalf("error occured while running http server %s", err.Error())
 	}
