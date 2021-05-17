@@ -8,15 +8,14 @@ import (
 	"gorm.io/gorm"
 )
 
-func main ()  {
-    db, err := gorm.Open(postgres.Open(config.DSN), &gorm.Config{})
-    config.DB = db
+func main() {
+	db, err := gorm.Open(postgres.Open(config.DSN), &gorm.Config{})
+	config.DB = db
 	if err != nil {
 		panic("failed to connect database")
 	}
 	config.DB.AutoMigrate(&models.User{})
 
-    r := routes.InitRouter()
-    r.Run()
+	r := routes.InitRouter()
+	r.Run()
 }
-

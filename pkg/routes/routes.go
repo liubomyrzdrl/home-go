@@ -6,7 +6,6 @@ import (
 )
 
 func InitRouter() *gin.Engine {
-	//r:= gin.Default()
 	r := gin.New()
 	userRoute := r.Group("/user-api")
 	{

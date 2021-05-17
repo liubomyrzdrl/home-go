@@ -9,14 +9,13 @@ import (
 )
 
 func GetUsers(c *gin.Context) {
-	var user  []models.User
+	var user []models.User
 	err := models.GetAllUsers(&user)
 	if err != nil {
 		c.AbortWithStatus(http.StatusNotFound)
 	} else {
 		c.JSON(http.StatusOK, user)
 	}
-
 }
 
 func CreateUser(c *gin.Context) {
@@ -49,7 +48,7 @@ func GetUserByID(c *gin.Context) {
 	}
 }
 
-func DeleteUser(c *gin.Context)  {
+func DeleteUser(c *gin.Context) {
 	var user models.User
 	id := c.Params.ByName("id")
 	intId, error := strconv.ParseInt(id[3:], 10, 64)

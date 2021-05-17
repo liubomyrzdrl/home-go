@@ -21,7 +21,7 @@ func CreateUser(user *User) (err error) {
 }
 
 // GetUserById ... fetch user by id
-func  GetUserById(user *User, id int64) (err error) {
+func GetUserById(user *User, id int64) (err error) {
 	if err = config.DB.Where("id = ?", id).First(user).Error; err != nil {
 		return err
 	}
