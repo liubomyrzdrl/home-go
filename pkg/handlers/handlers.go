@@ -1,4 +1,4 @@
-package controllers
+package handlers
 
 import (
 	"fmt"
@@ -20,7 +20,6 @@ func GetUsers(c *gin.Context) {
 
 func CreateUser(c *gin.Context) {
 	var user models.User
-
 	c.BindJSON(&user)
 	err := models.CreateUser(&user)
 	if err != nil {
@@ -29,7 +28,6 @@ func CreateUser(c *gin.Context) {
 	} else {
 		c.JSON(http.StatusOK, user)
 	}
-
 }
 
 func GetUserByID(c *gin.Context) {
