@@ -11,7 +11,7 @@ import (
 )
 
 func main() {
-	db, err := gorm.Open(postgres.Open(config.DSN), &gorm.Config{})
+	db, err := gorm.Open(postgres.Open(config.DSNREMOTE), &gorm.Config{})
 	config.DB = db
 	if err != nil {
 		panic("failed to connect database")
