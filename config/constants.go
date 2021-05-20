@@ -1,7 +1,7 @@
 package config
 
 // DSN You can set your database local settings
-const DSN = "host=localhost user=macbook  dbname=?  port=5432"
+const DSN = "host=localhost user=macbook  dbname=lireddit  port=5432"
 
 // DSNREMOTE DSN remote database
 const DSNREMOTE = `

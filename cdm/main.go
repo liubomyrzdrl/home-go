@@ -11,12 +11,12 @@ import (
 )
 
 func main() {
-	db, err := gorm.Open(postgres.Open(config.DSNREMOTE), &gorm.Config{})
+	db, err := gorm.Open(postgres.Open(config.DSN), &gorm.Config{})
 	config.DB = db
 	if err != nil {
 		panic("failed to connect database")
 	}
-	config.DB.AutoMigrate(&models.User{})
+	config.DB.AutoMigrate(&models.User{}, &models.CreditCard{}, &models.Role{})
 
 	srv := new(homego.Server)
 	if err := srv.Run(config.PORT, routes.InitRouter()); err != nil {
