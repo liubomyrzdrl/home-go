@@ -1,4 +1,4 @@
-package handlers
+package handler
 
 import (
 	"fmt"
@@ -7,9 +7,9 @@ import (
 	"net/http"
 )
 
-func GetCreditCards(c *gin.Context) {
-	var cards []models.CreditCard
-	err := models.GetAllCreditCards(&cards)
+func (h *Handler) GetCreditCards(c *gin.Context) {
+
+	cards,err := h.services.CreditCard.GetAllCreditCards()
 	if err != nil {
 		c.AbortWithStatus(http.StatusNotFound)
 	} else {
@@ -17,10 +17,10 @@ func GetCreditCards(c *gin.Context) {
 	}
 }
 
-func CreateCreditCard(c *gin.Context) {
+func (h *Handler) CreateCreditCard(c *gin.Context) {
 	var card models.CreditCard
 	c.BindJSON(&card)
-	err := models.CreateCreditCard(&card)
+	err :=  h.services.CreateCreditCard(card)
 	if err != nil {
 		fmt.Println(err.Error())
 		c.AbortWithStatus(http.StatusNotFound)

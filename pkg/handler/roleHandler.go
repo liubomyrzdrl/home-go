@@ -1,18 +1,16 @@
-package handlers
+package handler
 
 import (
 	"github.com/gin-gonic/gin"
-	"github.com/liubomyrzdrl/home-go/models"
 	"net/http"
 )
 
-func GetRoles(c *gin.Context) {
-	var roles []models.Role
-	err := models.GetRoles(&roles)
+func (h *Handler) GetRoles(c *gin.Context) {
+	 roles, err :=  h.services.Role.GetRoles()
+
 	if err != nil {
 		c.AbortWithStatus(http.StatusNotFound)
 	} else {
 		c.JSON(http.StatusOK, roles)
 	}
 }
-

@@ -5,18 +5,13 @@ import (
 	"github.com/liubomyrzdrl/home-go/config"
 	"github.com/liubomyrzdrl/home-go/models"
 	"github.com/liubomyrzdrl/home-go/models/repository"
-	"github.com/liubomyrzdrl/home-go/pkg/routes"
+	"github.com/liubomyrzdrl/home-go/pkg/handler"
+	"github.com/liubomyrzdrl/home-go/pkg/service"
 	"github.com/spf13/viper"
 	"log"
 )
 
 func main() {
-	//TODO alternative db config
-	//db, err := gorm.Open(postgres.Open(config.DSNREMOTE), &gorm.Config{})
-	//config.DB = db
-	//if err != nil {
-	//	panic("failed to connect database")
-	//}
 	if err := initConfig(); err != nil {
 		log.Fatal("error init configs: %s", err.Error())
 	}
@@ -28,16 +23,19 @@ func main() {
 		Port: viper.GetString("db.port"),
 	})
 
-	config.DB = db
+        repos := repository.NewRepository(db)
+		services := service.NewService(repos)
+		handler := handler.NewHandler(services)
 	if err != nil {
 		log.Fatalf("failed to initialize db: %s", err.Error())
 	}
-	config.DB.AutoMigrate(&models.User{}, &models.CreditCard{}, &models.Role{})
+
+	db.AutoMigrate(&models.User{}, &models.CreditCard{}, &models.Role{})
 
 
-
+    //routes.InitRouter()
 	srv := new(homego.Server)
-	if err := srv.Run(config.PORT, routes.InitRouter()); err != nil {
+	if err := srv.Run(config.PORT, handler.InitRoutes()); err != nil {
 		log.Fatalf("error occured while running http server %s", err.Error())
 	}
 

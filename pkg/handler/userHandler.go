@@ -1,27 +1,32 @@
-package handlers
+package handler
 
 import (
 	"fmt"
 	"github.com/gin-gonic/gin"
 	"github.com/liubomyrzdrl/home-go/models"
+	"github.com/sirupsen/logrus"
 	"net/http"
 	"strconv"
 )
 
-func GetUsers(c *gin.Context) {
-	var user []models.User
-	err := models.GetAllUsers(&user)
+func (h *Handler) GetUsers(c *gin.Context) {
+	users, err := h.services.User.GetAllUsers()
+	logrus.Println("Users", users)
 	if err != nil {
 		c.AbortWithStatus(http.StatusNotFound)
 	} else {
-		c.JSON(http.StatusOK, user)
+		c.JSON(http.StatusOK, users)
 	}
+
+
 }
 
-func CreateUser(c *gin.Context) {
-	var user models.User
+func (h *Handler) CreateUser(c *gin.Context) {
+	user:= models.User{}
+
 	c.BindJSON(&user)
-	err := models.CreateUser(&user)
+	err := h.services.User.CreateUser(user)
+
 	if err != nil {
 		fmt.Println(err.Error())
 		c.AbortWithStatus(http.StatusNotFound)
@@ -30,7 +35,7 @@ func CreateUser(c *gin.Context) {
 	}
 }
 
-func GetUserByID(c *gin.Context) {
+func (h *Handler) GetUserByID(c *gin.Context) {
 	id := c.Params.ByName("id")
 	var user models.User
 	intId, error := strconv.ParseInt(id[3:], 10, 64)
@@ -38,7 +43,7 @@ func GetUserByID(c *gin.Context) {
 		panic(error)
 	}
 
-	err := models.GetUserById(&user, intId)
+	err := h.services.User.GetUserById(user, intId)
 	if err != nil {
 		c.AbortWithStatus(http.StatusNotFound)
 	} else {
@@ -46,14 +51,14 @@ func GetUserByID(c *gin.Context) {
 	}
 }
 
-func DeleteUser(c *gin.Context) {
+func (h *Handler) DeleteUser(c *gin.Context) {
 	var user models.User
 	id := c.Params.ByName("id")
 	intId, error := strconv.ParseInt(id[3:], 10, 64)
 	if error != nil {
 		panic(error)
 	}
-	err := models.DeleteUser(&user, intId)
+	err := h.services.User.DeleteUser(user, intId)
 	if err != nil {
 		c.AbortWithStatus(http.StatusNotFound)
 	} else {
