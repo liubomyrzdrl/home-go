@@ -22,18 +22,17 @@ func main() {
 		DBName: viper.GetString("db.dbName"),
 		Port: viper.GetString("db.port"),
 	})
-
-        repos := repository.NewRepository(db)
-		services := service.NewService(repos)
-		handler := handler.NewHandler(services)
 	if err != nil {
 		log.Fatalf("failed to initialize db: %s", err.Error())
 	}
 
+        repos := repository.NewRepository(db)
+		services := service.NewService(repos)
+		handler := handler.NewHandler(services)
+
+
 	db.AutoMigrate(&models.User{}, &models.CreditCard{}, &models.Role{})
 
-
-    //routes.InitRouter()
 	srv := new(homego.Server)
 	if err := srv.Run(config.PORT, handler.InitRoutes()); err != nil {
 		log.Fatalf("error occured while running http server %s", err.Error())
